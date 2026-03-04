@@ -1,0 +1,53 @@
+#ifndef GLWIDGET_GPU_H
+#define GLWIDGET_GPU_H
+
+#include <QOpenGLWidget>
+#include <QOpenGLFunctions>
+#include <QOpenGLShaderProgram>
+#include <QOpenGLBuffer>
+#include <QOpenGLVertexArrayObject>
+#include <QTimer>
+#include "camera.h"
+#include "light.h"
+
+class GLWidgetGPU : public QOpenGLWidget, protected QOpenGLFunctions
+{
+    Q_OBJECT
+
+public:
+    explicit GLWidgetGPU(QWidget *parent = nullptr);
+    ~GLWidgetGPU();
+
+    // Параметры рендеринга
+    void setSamples(int samples);
+    void setMaxDepth(int depth);
+
+protected:
+    void initializeGL() override;
+    void resizeGL(int w, int h) override;
+    void paintGL() override;
+
+private:
+    void setupShaders();
+    void setupQuad();
+    void updateUniforms();
+
+    // OpenGL объекты
+    QOpenGLShaderProgram* shaderProgram;
+    QOpenGLBuffer* vbo;
+    QOpenGLVertexArrayObject* vao;
+
+    // Параметры сцены
+    Camera camera;
+    std::vector<Light> lights;
+
+    // Параметры рендеринга
+    int samples;
+    int maxDepth;
+    float time;
+
+    // Таймер для анимации
+    QTimer* timer;
+};
+
+#endif // GLWIDGET_GPU_H
