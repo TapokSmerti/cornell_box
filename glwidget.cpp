@@ -17,6 +17,12 @@ GLWidgetGPU::GLWidgetGPU(QWidget *parent)
     , projectionType(0)
 
 {
+
+    materials[0] = {QVector3D(0.2f, 0.8f, 0.8f), QVector3D(0.9f, 0.9f, 0.9f), 64.0f, 0.0f};
+    materials[1] = {QVector3D(0.9f, 0.8f, 0.2f), QVector3D(0.9f, 0.9f, 0.9f), 32.0f, 0.0f};
+    materials[2] = {QVector3D(0.3f, 0.2f, 0.4f), QVector3D(0.8f, 0.8f, 0.8f), 16.0f, 0.0f};
+
+
     // Настройка камеры
     camera.position = QVector3D(0.0f, 1.5f, 8.0f);
     camera.target = QVector3D(0.0f, 1.0f, 0.0f);
@@ -70,6 +76,10 @@ void GLWidgetGPU::setCameraFov(float fov)           { camera.fov = fov; }
 
 void GLWidgetGPU::setProjectionType(int type) { projectionType = type; }
 
+void GLWidgetGPU::setMaterialAlbedo(int i, QVector3D v)       { materials[i-1].albedo = v; }
+void GLWidgetGPU::setMaterialSpecular(int i, QVector3D v)     { materials[i-1].specular = v; }
+void GLWidgetGPU::setMaterialShininess(int i, float v)        { materials[i-1].shininess = v; }
+void GLWidgetGPU::setMaterialTransparency(int i, float v)     { materials[i-1].transparency = v; }
 
 void GLWidgetGPU::initializeGL()
 {
@@ -530,48 +540,13 @@ void GLWidgetGPU::updateUniforms()
 
     // Материалы - ВАЖНО: Проверяем наличие uniforms
     if (shaderProgram->uniformLocation("u_material1_albedo") >= 0) {
-//        // Material 1 - простой диффузный красный
-//        shaderProgram->setUniformValue("u_material1_albedo", QVector3D(0.8f, 0.2f, 0.2f));
-//        shaderProgram->setUniformValue("u_material1_specular", QVector3D(0.0f, 0.0f, 0.0f)); // блик отключён
-//        shaderProgram->setUniformValue("u_material1_shininess", 1.0f);
-//        shaderProgram->setUniformValue("u_material1_transparency", 0.0f); // непрозрачный
-
-//        // Material 2 - простой диффузный зелёный
-//        shaderProgram->setUniformValue("u_material2_albedo", QVector3D(0.2f, 0.8f, 0.2f));
-//        shaderProgram->setUniformValue("u_material2_specular", QVector3D(0.0f, 0.0f, 0.0f));
-//        shaderProgram->setUniformValue("u_material2_shininess", 1.0f);
-//        shaderProgram->setUniformValue("u_material2_transparency", 0.0f);
-
-//        // Material 3 - простой диффузный синий
-//        shaderProgram->setUniformValue("u_material3_albedo", QVector3D(0.2f, 0.2f, 0.8f));
-//        shaderProgram->setUniformValue("u_material3_specular", QVector3D(0.0f, 0.0f, 0.0f));
-//        shaderProgram->setUniformValue("u_material3_shininess", 1.0f);
-//        shaderProgram->setUniformValue("u_material3_transparency", 0.0f);
-
-
-
-
-        // Material 1 (бирюзовая непрозрачная)
-        shaderProgram->setUniformValue("u_material1_albedo", QVector3D(0.2f, 0.8f, 0.8f));
-        shaderProgram->setUniformValue("u_material1_specular", QVector3D(0.9f, 0.9f, 0.9f));
-        shaderProgram->setUniformValue("u_material1_shininess", 64.0f);
-        shaderProgram->setUniformValue("u_material1_transparency", 0.0f);
-
-        // Material 2 (желтая полупрозрачная)
-        shaderProgram->setUniformValue("u_material2_albedo", QVector3D(0.9f, 0.8f, 0.2f));
-        shaderProgram->setUniformValue("u_material2_specular", QVector3D(0.9f, 0.9f, 0.9f));
-        shaderProgram->setUniformValue("u_material2_shininess", 32.0f);
-        shaderProgram->setUniformValue("u_material2_transparency", 0.7f);
-
-        // Material 3 (темная полупрозрачная)
-        shaderProgram->setUniformValue("u_material3_albedo", QVector3D(0.9f, 0.8f, 0.2f));
-        shaderProgram->setUniformValue("u_material3_specular", QVector3D(0.9f, 0.9f, 0.9f));
-        shaderProgram->setUniformValue("u_material3_shininess", 32.0f);
-        shaderProgram->setUniformValue("u_material3_transparency", 0.7f);
-        shaderProgram->setUniformValue("u_material3_albedo", QVector3D(0.3f, 0.2f, 0.4f));
-        shaderProgram->setUniformValue("u_material3_specular", QVector3D(0.8f, 0.8f, 0.8f));
-        shaderProgram->setUniformValue("u_material3_shininess", 16.0f);
-        shaderProgram->setUniformValue("u_material3_transparency", 0.8f);
+        for (int i = 0; i < 3; i++) {
+            QString p = QString("u_material%1_").arg(i + 1);
+            shaderProgram->setUniformValue(qPrintable(p + "albedo"),       materials[i].albedo);
+            shaderProgram->setUniformValue(qPrintable(p + "specular"),     materials[i].specular);
+            shaderProgram->setUniformValue(qPrintable(p + "shininess"),    materials[i].shininess);
+            shaderProgram->setUniformValue(qPrintable(p + "transparency"), materials[i].transparency);
+        }
     }
 
     shaderProgram->release();

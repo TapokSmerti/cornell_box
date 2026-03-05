@@ -6,6 +6,8 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QComboBox>
+#include <QTabWidget>
+#include <QScrollArea>
 #include "glwidget.h"
 
 
@@ -35,6 +37,13 @@ private:
     QDoubleSpinBox *camTargetX, *camTargetY, *camTargetZ;
     QDoubleSpinBox *camFov;
     QComboBox *projectionCombo;
+    QTabWidget *tabWidget;
+
+    QDoubleSpinBox *matAlbedoR[3],  *matAlbedoG[3],  *matAlbedoB[3];
+    QDoubleSpinBox *matSpecR[3],    *matSpecG[3],    *matSpecB[3];
+    QDoubleSpinBox *matShininess[3];
+    QDoubleSpinBox *matTransparency[3];
+
 
 
 };
