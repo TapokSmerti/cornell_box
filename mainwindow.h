@@ -2,6 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QDoubleSpinBox>
+#include <QLabel>
+#include <QPushButton>
 #include "glwidget.h"
 
 QT_BEGIN_NAMESPACE
@@ -16,8 +19,15 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void onRenderClicked();
+
 private:
     Ui::MainWindow *ui;
     GLWidgetGPU *glWidget;
+
+    QDoubleSpinBox *lightIntensitySpinBox;
+    QPushButton    *renderButton;
 };
-#endif // MAINWINDOW_H
+
+#endif

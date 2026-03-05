@@ -13,6 +13,7 @@ GLWidgetGPU::GLWidgetGPU(QWidget *parent)
     , samples(300)  // Уменьшил для быстрого тестирования
     , maxDepth(7)   // Уменьшил для быстрого тестирования
     , time(0.0f)
+    , lightIntensity(5.0f)
 {
     // Настройка камеры
     camera.position = QVector3D(0.0f, 1.5f, 8.0f);
@@ -52,6 +53,12 @@ void GLWidgetGPU::setSamples(int s)
 void GLWidgetGPU::setMaxDepth(int d)
 {
     maxDepth = d;
+    update();
+}
+
+void GLWidgetGPU::setLightIntensity(float intensity)
+{
+    lightIntensity = intensity;
     update();
 }
 
@@ -508,7 +515,7 @@ void GLWidgetGPU::updateUniforms()
         
         // ВАЖНО: Проверяем есть ли этот uniform перед установкой
         if (shaderProgram->uniformLocation("u_lightIntensity") >= 0) {
-            shaderProgram->setUniformValue("u_lightIntensity", 5.0f);
+            shaderProgram->setUniformValue("u_lightIntensity", lightIntensity);
         }
     }
 

@@ -21,6 +21,8 @@ public:
     // Параметры рендеринга
     void setSamples(int samples);
     void setMaxDepth(int depth);
+    void setLightIntensity(float intensity);
+
 
 protected:
     void initializeGL() override;
@@ -48,6 +50,9 @@ private:
 
     // Таймер для анимации
     QTimer* timer;
+
+    float lightIntensity;
+
 };
 
 #endif // GLWIDGET_GPU_H
