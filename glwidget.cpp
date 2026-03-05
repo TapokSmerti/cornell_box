@@ -1,6 +1,9 @@
 #include "glwidget.h"
 #include <QDebug>
 #include <QFile>
+#include <QDir>
+#include <QCoreApplication>
+
 
 GLWidgetGPU::GLWidgetGPU(QWidget *parent)
     : QOpenGLWidget(parent)
@@ -69,19 +72,22 @@ void GLWidgetGPU::setupShaders()
 {
     shaderProgram = new QOpenGLShaderProgram(this);
 
+    qDebug() << "Current working directory:" << QDir::currentPath();
+    qDebug() << "Application directory:" << QCoreApplication::applicationDirPath();
+
     // Попробуем несколько путей к шейдерам
     QStringList possibleVertexPaths = {
         "vertex_shader.glsl",
         "./vertex_shader.glsl",
         "../vertex_shader.glsl",
-        "G:/study/University/11_semester/graphics/final_project/versions/GPU_bound_shaders_material/vertex_shader.glsl"
+        "G:/study/University/6_course/11_semester/graphics/final_project/versions/GPU_bound_shaders_material/vertex_shader.glsl"
     };
     
     QStringList possibleFragmentPaths = {
         "fragment_shader.glsl",
         "./fragment_shader.glsl",
         "../fragment_shader.glsl",
-        "G:/study/University/11_semester/graphics/final_project/versions/GPU_bound_shaders_material/fragment_shader.glsl"
+        "G:/study/University/6_course/11_semester/graphics/final_project/versions/GPU_bound_shaders_material/fragment_shader.glsl"
     };
 
     QString vertexShaderSource;
@@ -508,6 +514,27 @@ void GLWidgetGPU::updateUniforms()
 
     // Материалы - ВАЖНО: Проверяем наличие uniforms
     if (shaderProgram->uniformLocation("u_material1_albedo") >= 0) {
+//        // Material 1 - простой диффузный красный
+//        shaderProgram->setUniformValue("u_material1_albedo", QVector3D(0.8f, 0.2f, 0.2f));
+//        shaderProgram->setUniformValue("u_material1_specular", QVector3D(0.0f, 0.0f, 0.0f)); // блик отключён
+//        shaderProgram->setUniformValue("u_material1_shininess", 1.0f);
+//        shaderProgram->setUniformValue("u_material1_transparency", 0.0f); // непрозрачный
+
+//        // Material 2 - простой диффузный зелёный
+//        shaderProgram->setUniformValue("u_material2_albedo", QVector3D(0.2f, 0.8f, 0.2f));
+//        shaderProgram->setUniformValue("u_material2_specular", QVector3D(0.0f, 0.0f, 0.0f));
+//        shaderProgram->setUniformValue("u_material2_shininess", 1.0f);
+//        shaderProgram->setUniformValue("u_material2_transparency", 0.0f);
+
+//        // Material 3 - простой диффузный синий
+//        shaderProgram->setUniformValue("u_material3_albedo", QVector3D(0.2f, 0.2f, 0.8f));
+//        shaderProgram->setUniformValue("u_material3_specular", QVector3D(0.0f, 0.0f, 0.0f));
+//        shaderProgram->setUniformValue("u_material3_shininess", 1.0f);
+//        shaderProgram->setUniformValue("u_material3_transparency", 0.0f);
+
+
+
+
         // Material 1 (бирюзовая непрозрачная)
         shaderProgram->setUniformValue("u_material1_albedo", QVector3D(0.2f, 0.8f, 0.8f));
         shaderProgram->setUniformValue("u_material1_specular", QVector3D(0.9f, 0.9f, 0.9f));

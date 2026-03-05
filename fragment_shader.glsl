@@ -287,7 +287,7 @@ HitInfo intersectScene(Ray ray) {
     }
     
     // Сфера 3 (темная полупрозрачная)
-    hit = intersectSphere(ray, vec3(0.9, -0.9, 0), 0.1, getMaterial3());
+    hit = intersectSphere(ray, vec3(0.9, -0.7, 0), 0.3, getMaterial3());
     if (hit.hit && hit.t < closestT) {
         closestT = hit.t;
         closestHit = hit;
@@ -321,16 +321,14 @@ vec3 trace(Ray ray, int maxDepth) {
         if (!hit.hit) break;
         
         vec3 viewDir = normalize(-ray.direction);
-        
-        // ===== Прямое освещение =====
         vec3 toLight = u_lightPos - hit.position;
         float dist = length(toLight);
         vec3 lightDir = normalize(toLight);
         
+        // Тень
         Ray shadowRay;
         shadowRay.origin = hit.position + hit.normal * 0.001;
         shadowRay.direction = lightDir;
-        
         HitInfo shadow = intersectScene(shadowRay);
         
         if (!shadow.hit || shadow.t > dist) {
@@ -339,36 +337,38 @@ vec3 trace(Ray ray, int maxDepth) {
             color += throughput * lighting * (1.0 - hit.material.transparency);
         }
         
-        // ===== Материал-специфичное поведение =====
-        
-        // Прозрачность (Refraction)
-        if (hit.material.transparency > 0.5 && hit.material.type == 2) {
-            float eta = 1.0 / hit.material.ior;
-            vec3 refracted = refract(ray.direction, hit.normal, eta);
+        // Прозрачность
+        if (hit.material.transparency > 0.5) {
+            bool entering = dot(ray.direction, hit.normal) < 0.0;
+            vec3 faceNormal = entering ? hit.normal : -hit.normal;
+            float eta = entering ? (1.0 / hit.material.ior) : hit.material.ior;
             
-            if (length(refracted) > 0.0) {
-                ray.origin = hit.position - hit.normal * 0.001;
-                ray.direction = refracted;
+            vec3 refracted = refract(normalize(ray.direction), faceNormal, eta);
+            
+            if (dot(refracted, refracted) > 0.001) {
+                ray.origin = hit.position - faceNormal * 0.005;
+                ray.direction = normalize(refracted);
                 throughput *= hit.material.albedo;
+                continue;
+            } else {
+                // Полное внутреннее отражение
+                ray.origin = hit.position + faceNormal * 0.005;
+                ray.direction = normalize(reflect(ray.direction, faceNormal));
                 continue;
             }
         }
-        
-        // Russian Roulette
-        float p = max(throughput.x, max(throughput.y, throughput.z));
-        if (random() > p) break;
-        throughput /= p;
         
         // Диффузный отскок
         vec3 randomDir = randomCosineHemisphere(hit.normal);
         ray.origin = hit.position + hit.normal * 0.001;
         ray.direction = randomDir;
-        throughput *= hit.material.albedo;
+        throughput *= hit.material.albedo * 0.5;
+        
+        if (max(throughput.x, max(throughput.y, throughput.z)) < 0.01) break;
     }
     
-    return color;
+    return clamp(color, 0.0, 1.0);
 }
-
 // ===== Генерация луча камеры =====
 Ray generateCameraRay(vec2 uv) {
     vec3 forward = normalize(u_cameraTarget - u_cameraPos);

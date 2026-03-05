@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 5.0.2, 2026-02-18T23:38:50. -->
+<!-- Written by QtCreator 5.0.2, 2026-03-05T03:09:33. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -237,8 +237,9 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:G:/study/University/6_курс/11_semester/graphics/final_project/versions/GPU_bound_shaders_material/final_project.pro</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">G:/study/University/6_курс/11_semester/graphics/final_project/versions/GPU_bound_shaders_material/final_project.pro</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">final_project2</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:G:/study/University/6_course/11_semester/graphics/final_project/versions/GPU_bound_shaders_material/final_project.pro</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">G:/study/University/6_course/11_semester/graphics/final_project/versions/GPU_bound_shaders_material/final_project.pro</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
