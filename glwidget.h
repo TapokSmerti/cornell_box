@@ -30,6 +30,7 @@ public:
     void setCameraTarget(QVector3D target);
     void setCameraFov(float fov);
 
+    void setProjectionType(int type); // 0 = perspective, 1 = orthographic
 
 
 protected:
@@ -60,6 +61,8 @@ private:
     QTimer* timer;
 
     float lightIntensity;
+    int projectionType;
+
 
 };
 

@@ -23,7 +23,7 @@ public:
 
 private slots:
     void onRenderClicked();
-
+    void onResetClicked();
 
 private:
     Ui::MainWindow *ui;
@@ -34,6 +34,8 @@ private:
     QDoubleSpinBox *camPosX, *camPosY, *camPosZ;
     QDoubleSpinBox *camTargetX, *camTargetY, *camTargetZ;
     QDoubleSpinBox *camFov;
+    QComboBox *projectionCombo;
+
 
 };
 

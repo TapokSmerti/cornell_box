@@ -44,6 +44,13 @@ MainWindow::MainWindow(QWidget *parent)
     QGroupBox *cameraGroup = new QGroupBox("Камера");
     QVBoxLayout *cameraLayout = new QVBoxLayout(cameraGroup);
 
+    // Проекция
+    cameraLayout->addWidget(new QLabel("Проекция:"));
+    projectionCombo = new QComboBox();
+    projectionCombo->addItem("Перспективная");
+    projectionCombo->addItem("Ортографическая");
+    cameraLayout->addWidget(projectionCombo);
+
     cameraLayout->addWidget(new QLabel("Позиция (X, Y, Z):"));
     QHBoxLayout *posLayout = new QHBoxLayout();
     camPosX = new QDoubleSpinBox(); camPosX->setRange(-10, 10); camPosX->setValue(0.0);  camPosX->setSingleStep(0.1); camPosX->setDecimals(1);
@@ -75,16 +82,22 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 
+    // Две кнопки рендера:
+    QHBoxLayout *buttonsLayout = new QHBoxLayout();
+
     renderButton = new QPushButton("Рендерить");
     renderButton->setMinimumHeight(35);
-    controlLayout->addWidget(renderButton);
+
+    QPushButton *resetButton = new QPushButton("Сброс");
+    resetButton->setMinimumHeight(35);
+
+    buttonsLayout->addWidget(resetButton);
+    buttonsLayout->addWidget(renderButton);
+    controlLayout->addLayout(buttonsLayout);
     controlLayout->addStretch();
 
-    connect(renderButton, &QPushButton::clicked,
-            this, &MainWindow::onRenderClicked);
-
-    controlLayout->addStretch();
-
+    connect(renderButton, &QPushButton::clicked, this, &MainWindow::onRenderClicked);
+    connect(resetButton,  &QPushButton::clicked, this, &MainWindow::onResetClicked);
     // OpenGL виджет
     glWidget = new GLWidgetGPU(centralWidget);
 
@@ -112,7 +125,26 @@ void MainWindow::onRenderClicked()
     glWidget->setCameraPosition(QVector3D(camPosX->value(), camPosY->value(), camPosZ->value()));
     glWidget->setCameraTarget(QVector3D(camTargetX->value(), camTargetY->value(), camTargetZ->value()));
     glWidget->setCameraFov(camFov->value());
+    // Проекция камеры
+    glWidget->setProjectionType(projectionCombo->currentIndex());
+
 
     glWidget->update();
     renderButton->setText("Рендерить");
+}
+
+void MainWindow::onResetClicked()
+{
+    // Свет
+    lightIntensitySpinBox->setValue(5.0);
+
+    // Камера
+    camPosX->setValue(0.0);
+    camPosY->setValue(1.5);
+    camPosZ->setValue(8.0);
+    camTargetX->setValue(0.0);
+    camTargetY->setValue(1.0);
+    camTargetZ->setValue(0.0);
+    camFov->setValue(60.0);
+    projectionCombo->setCurrentIndex(0); // перспективная
 }

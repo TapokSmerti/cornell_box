@@ -15,6 +15,7 @@ GLWidgetGPU::GLWidgetGPU(QWidget *parent)
     , time(0.0f)
     , lightIntensity(5.0f)
     , projectionType(0)
+
 {
     // Настройка камеры
     camera.position = QVector3D(0.0f, 1.5f, 8.0f);
@@ -66,6 +67,9 @@ void GLWidgetGPU::setLightIntensity(float intensity)
 void GLWidgetGPU::setCameraPosition(QVector3D pos) { camera.position = pos; }
 void GLWidgetGPU::setCameraTarget(QVector3D t)      { camera.target = t; }
 void GLWidgetGPU::setCameraFov(float fov)           { camera.fov = fov; }
+
+void GLWidgetGPU::setProjectionType(int type) { projectionType = type; }
+
 
 void GLWidgetGPU::initializeGL()
 {
@@ -510,7 +514,7 @@ void GLWidgetGPU::updateUniforms()
     
     // ВАЖНО: Проверяем есть ли этот uniform перед установкой
     if (shaderProgram->uniformLocation("u_projectionType") >= 0) {
-        shaderProgram->setUniformValue("u_projectionType", 0); // 0 = perspective
+        shaderProgram->setUniformValue("u_projectionType", projectionType); // <- было 0
     }
 
     // Свет
