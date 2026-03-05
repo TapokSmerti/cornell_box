@@ -88,7 +88,7 @@ MainWindow::MainWindow(QWidget *parent)
     double albedoDef[3][3] = {{0.2, 0.8, 0.8}, {0.9, 0.8, 0.2}, {0.3, 0.2, 0.4}};
     double specDef[3][3]   = {{0.9, 0.9, 0.9}, {0.9, 0.9, 0.9}, {0.8, 0.8, 0.8}};
     double shinDef[]       = {64.0, 32.0, 16.0};
-    double transDef[]      = {0.0,  0.0,  0.0};
+    double transDef[]      = {0.0,  0.7,  0.95};
 
     for (int i = 0; i < 3; i++) {
         QWidget *matTab = new QWidget();

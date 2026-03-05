@@ -296,7 +296,7 @@ HitInfo intersectScene(Ray ray) {
     return closestHit;
 }
 
-// ===== Blinn-Phong освещение =====
+// ===== Blinn-Phong освещение (Модель Блинн-Фонга)=====
 vec3 blinnPhong(vec3 lightDir, vec3 viewDir, vec3 normal, Material mat, vec3 lightColor) {
     // Diffuse
     float diff = max(dot(normal, lightDir), 0.0);
@@ -310,7 +310,7 @@ vec3 blinnPhong(vec3 lightDir, vec3 viewDir, vec3 normal, Material mat, vec3 lig
     return diffuse + specular;
 }
 
-// ===== Path Tracing =====
+// ===== Path Tracing (Обратная трассировка)=====
 vec3 trace(Ray ray, int maxDepth) {
     vec3 color = vec3(0.0);
     vec3 throughput = vec3(1.0);
@@ -411,6 +411,7 @@ void main() {
     
     vec3 color = vec3(0.0);
     
+    // Метод Монте-Карло, бросаем случайные лучи
     for (int i = 0; i < u_samples; i++) {
         vec2 jitter = vec2(random(), random()) / u_resolution;
         vec2 sampledUV = uv + jitter;
