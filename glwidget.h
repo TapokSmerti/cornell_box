@@ -21,7 +21,15 @@ public:
     // Параметры рендеринга
     void setSamples(int samples);
     void setMaxDepth(int depth);
+
+    // Контрольная панель
     void setLightIntensity(float intensity);
+
+
+    void setCameraPosition(QVector3D pos);
+    void setCameraTarget(QVector3D target);
+    void setCameraFov(float fov);
+
 
 
 protected:

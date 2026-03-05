@@ -5,7 +5,9 @@
 #include <QDoubleSpinBox>
 #include <QLabel>
 #include <QPushButton>
+#include <QComboBox>
 #include "glwidget.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -22,12 +24,17 @@ public:
 private slots:
     void onRenderClicked();
 
+
 private:
     Ui::MainWindow *ui;
     GLWidgetGPU *glWidget;
 
     QDoubleSpinBox *lightIntensitySpinBox;
     QPushButton    *renderButton;
+    QDoubleSpinBox *camPosX, *camPosY, *camPosZ;
+    QDoubleSpinBox *camTargetX, *camTargetY, *camTargetZ;
+    QDoubleSpinBox *camFov;
+
 };
 
 #endif

@@ -10,10 +10,11 @@ GLWidgetGPU::GLWidgetGPU(QWidget *parent)
     , shaderProgram(nullptr)
     , vbo(nullptr)
     , vao(nullptr)
-    , samples(300)  // Уменьшил для быстрого тестирования
-    , maxDepth(7)   // Уменьшил для быстрого тестирования
+    , samples(300)  // Оптимальное значение быстрого тестирования
+    , maxDepth(7)   // Оптимальное значение
     , time(0.0f)
     , lightIntensity(5.0f)
+    , projectionType(0)
 {
     // Настройка камеры
     camera.position = QVector3D(0.0f, 1.5f, 8.0f);
@@ -61,6 +62,10 @@ void GLWidgetGPU::setLightIntensity(float intensity)
     lightIntensity = intensity;
     update();
 }
+
+void GLWidgetGPU::setCameraPosition(QVector3D pos) { camera.position = pos; }
+void GLWidgetGPU::setCameraTarget(QVector3D t)      { camera.target = t; }
+void GLWidgetGPU::setCameraFov(float fov)           { camera.fov = fov; }
 
 void GLWidgetGPU::initializeGL()
 {
